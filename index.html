@@ -8,10 +8,25 @@
  <h1>Tippspiel-Demo</h1>
  <label>Name:</label>
  <input type="text" id="name"><br><br>
- <label>Tore Team A:</label>
+ <label>Team A Name</label>
+ <input type="text" onaction="changeName()" id="team_a"/>
+ <label id="label_a">Tore Team A:</label>
  <input type="number" id="toreA"><br><br>
- <label>Tore Team B:</label>
+ <label>Team B Name</label>
+ <input type="text" onaction="changeName()" id="team_b"/>
+ <label id="label_b">Tore Team B:</label>
  <input type="number" id="toreB"><br><br>
+
+ <script>
+    function changeName(){
+        const teamA = document.getElementById("team_a").value;
+        const teamB = document.getElementById("team_b").value;
+        
+        document.getElementById("label_a").innerHTML = "Tore "+teamA;
+        document.getElementById("label_b").innerHTML = "Tore "+teamB;
+    }
+ </script>
+
  <button onclick="speichern()">Tipp speichern</button>
  <button onclick="laden()">Tipps laden</button>
  <h2>Gespeicherte Tipps</h2>
@@ -25,13 +40,18 @@
  const name = document.getElementById("name").value;
  const toreA = Number(document.getElementById("toreA").value);
  const toreB = Number(document.getElementById("toreB").value);
+
+ const teamA = document.getElementById("team_a").value;
+ const teamB = document.getElementById("team_b").value;
  const { error } = await supabase
  .from("tipps")
  .insert([
  {
  name: name,
  tore_a: toreA,
- tore_b: toreB
+ tore_b: toreB,
+ team_a: teamA,
+ team_b: teamB
  }
  ]);
  if (error) {
@@ -57,7 +77,8 @@
  let tipp = data[i];
  text +=
  tipp.name + ": " +
- tipp.tore_a + " : " + tipp.tore_b +
+ tipp.team_a + " "+
+ tipp.tore_a + " : " + tipp.tore_b + " "+ tipp.team_b
  "<br>";
  }
  document.getElementById("ausgabe").innerHTML = text;
